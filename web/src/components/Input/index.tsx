@@ -5,7 +5,6 @@ import './styles.css';
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   name: string;
   label: string;
-  type?: string;
 }
 
 const Input: React.FC<InputProps> = ({ name, label, ...rest }) => {
