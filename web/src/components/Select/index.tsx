@@ -1,4 +1,4 @@
-import React, { SelectHTMLAttributes } from 'react';
+import React, { SelectHTMLAttributes, useMemo } from 'react';
 
 import './styles.css';
 
@@ -11,12 +11,22 @@ interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   }>;
 }
 
-const Select: React.FC<SelectProps> = ({ name, label, options, ...rest }) => {
+const Select: React.FC<SelectProps> = ({
+  name,
+  label,
+  options,
+  value,
+  ...rest
+}) => {
+  const id = useMemo(() => {
+    return `id_${name}`;
+  }, [name]);
+
   return (
     <div className="select-block">
-      <label htmlFor={name}>{label}</label>
+      <label htmlFor={id}>{label}</label>
 
-      <select id={name} defaultValue="" {...rest}>
+      <select id={id} name={name} value={value} {...rest}>
         <option value="" disabled hidden>
           Selecione uma opção
         </option>

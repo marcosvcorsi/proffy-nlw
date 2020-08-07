@@ -7,6 +7,7 @@ import warningIcon from '../../assets/images/icons/warning.svg';
 
 import './styles.css';
 import Select from '../../components/Select';
+import { useForm } from '../../hooks/form';
 
 interface ScheduleItem {
   week_day: string;
@@ -14,7 +15,25 @@ interface ScheduleItem {
   to: string;
 }
 
+interface IForm {
+  name: string;
+  avatar: string;
+  whatsapp: string;
+  bio: string;
+  subject: string;
+  cost: string;
+}
+
 const TeacherForm: React.FC = () => {
+  const { values, handleChange } = useForm<IForm>({
+    name: '',
+    avatar: '',
+    whatsapp: '',
+    bio: '',
+    subject: '',
+    cost: '',
+  });
+
   const [scheduleItems, setScheduleItems] = useState<ScheduleItem[]>([
     { week_day: '', from: '', to: '' },
   ]);
@@ -22,6 +41,10 @@ const TeacherForm: React.FC = () => {
   const handleAddNewScheduleItem = useCallback(() => {
     setScheduleItems((state) => [...state, { week_day: '', from: '', to: '' }]);
   }, []);
+
+  const handleSubmit = useCallback(() => {
+    console.log(values);
+  }, [values]);
 
   return (
     <div id="page-teacher-form" className="container">
@@ -34,13 +57,33 @@ const TeacherForm: React.FC = () => {
         <fieldset>
           <legend>Seus dados</legend>
 
-          <Input name="name" label="Nome Completo" />
+          <Input
+            name="name"
+            label="Nome Completo"
+            value={values.name}
+            onChange={handleChange}
+          />
 
-          <Input name="avatar" label="Avatar" />
+          <Input
+            name="avatar"
+            label="Avatar"
+            value={values.avatar}
+            onChange={handleChange}
+          />
 
-          <Input name="whatsapp" label="Whatsapp" />
+          <Input
+            name="whatsapp"
+            label="Whatsapp"
+            value={values.whatsapp}
+            onChange={handleChange}
+          />
 
-          <Textarea name="bio" label="Biografia" />
+          <Textarea
+            name="bio"
+            label="Biografia"
+            value={values.bio}
+            onChange={handleChange}
+          />
         </fieldset>
 
         <fieldset>
@@ -49,6 +92,8 @@ const TeacherForm: React.FC = () => {
           <Select
             name="subject"
             label="Matéria"
+            value={values.subject}
+            onChange={handleChange}
             options={[
               { value: 'Artes', label: 'Artes' },
               { value: 'Biologia', label: 'Biologia' },
@@ -63,7 +108,12 @@ const TeacherForm: React.FC = () => {
             ]}
           />
 
-          <Input name="cost" label="Custo da sua hora por aula" />
+          <Input
+            name="cost"
+            label="Custo da sua hora por aula"
+            value={values.cost}
+            onChange={handleChange}
+          />
         </fieldset>
 
         <fieldset>
@@ -103,7 +153,9 @@ const TeacherForm: React.FC = () => {
             Preencha todos os dados
           </p>
 
-          <button type="button">Salvar cadastro</button>
+          <button type="button" onClick={handleSubmit}>
+            Salvar cadastro
+          </button>
         </footer>
       </main>
     </div>

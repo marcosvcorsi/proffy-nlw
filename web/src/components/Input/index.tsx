@@ -1,4 +1,4 @@
-import React, { InputHTMLAttributes } from 'react';
+import React, { InputHTMLAttributes, useMemo } from 'react';
 
 import './styles.css';
 
@@ -8,11 +8,15 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 const Input: React.FC<InputProps> = ({ name, label, ...rest }) => {
+  const id = useMemo(() => {
+    return `input_${name}`;
+  }, [name]);
+
   return (
     <div className="input-block">
-      <label htmlFor={name}>{label}</label>
+      <label htmlFor={id}>{label}</label>
 
-      <input id={name} {...rest} />
+      <input id={id} name={name} {...rest} />
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import React, { TextareaHTMLAttributes } from 'react';
+import React, { TextareaHTMLAttributes, useMemo } from 'react';
 
 import './styles.css';
 
@@ -8,11 +8,15 @@ interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
 }
 
 const Textarea: React.FC<TextareaProps> = ({ name, label, ...rest }) => {
+  const id = useMemo(() => {
+    return `texarea_${name}`;
+  }, [name]);
+
   return (
     <div className="textarea-block">
-      <label htmlFor={name}>{label}</label>
+      <label htmlFor={id}>{label}</label>
 
-      <textarea id={name} {...rest} />
+      <textarea id={id} name={name} {...rest} />
     </div>
   );
 };
