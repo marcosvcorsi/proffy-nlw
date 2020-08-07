@@ -76,7 +76,7 @@ const TeacherForm: React.FC = () => {
 
         history.push('/');
       } catch (err) {
-        console.log('error', err);
+        alert('error');
       }
     },
     [values, scheduleItems, history]
