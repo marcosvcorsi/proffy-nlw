@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
 import whatsappIcon from '../../assets/images/icons/whatsapp.svg';
 
 import './styles.css';
+import api from '../../services/api';
 
 interface Teacher {
+  id: number;
   subject: string;
   cost: number;
   name: string;
@@ -18,7 +20,13 @@ interface TeacherItemProps {
 }
 
 const TeacherItem: React.FC<TeacherItemProps> = ({ teacher }) => {
-  const { subject, cost, name, avatar, whatsapp, bio } = teacher;
+  const { id, subject, cost, name, avatar, whatsapp, bio } = teacher;
+
+  const createConnection = useCallback(async () => {
+    api.post('/connections', {
+      user_id: id,
+    });
+  }, [id]);
 
   return (
     <article className="teacher-item">
@@ -40,6 +48,7 @@ const TeacherItem: React.FC<TeacherItemProps> = ({ teacher }) => {
         </p>
         <a
           href={`https://wa.me/${whatsapp}`}
+          onClick={createConnection}
           target="_blank"
           rel="noopener noreferrer"
         >
