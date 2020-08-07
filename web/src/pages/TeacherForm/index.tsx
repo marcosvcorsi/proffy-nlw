@@ -67,8 +67,6 @@ const TeacherForm: React.FC = () => {
   const handleCreateClass = useCallback(
     async (event: FormEvent) => {
       event.preventDefault();
-      console.log(values);
-      console.log(scheduleItems);
 
       try {
         await api.post('/classes', {
