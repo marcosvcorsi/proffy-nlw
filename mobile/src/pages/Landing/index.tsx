@@ -12,6 +12,10 @@ import styles from './styles';
 const Landing: React.FC = () => {
   const navigation = useNavigation();
 
+  const handleNavigateToStudy = useCallback(() => {
+    navigation.navigate('Study');
+  }, [navigation]);
+
   const handleNavigateToGiveClasses = useCallback(() => {
     navigation.navigate('GiveClasses');
   }, [navigation]);
@@ -26,7 +30,10 @@ const Landing: React.FC = () => {
       </Text>
 
       <View style={styles.buttonsContainer}>
-        <RectButton style={[styles.button, styles.buttonPrimary]}>
+        <RectButton
+          style={[styles.button, styles.buttonPrimary]}
+          onPress={handleNavigateToStudy}
+        >
           <Image source={studyIcon} />
           <Text style={styles.buttonText}>Estudar</Text>
         </RectButton>
