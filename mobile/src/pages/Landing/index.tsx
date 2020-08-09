@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { View, Image, Text } from 'react-native';
+import { View, Image, Text, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { RectButton } from 'react-native-gesture-handler';
 import landingImg from '../../assets/images/landing.png';
@@ -23,7 +23,7 @@ const Landing: React.FC = () => {
 
       setTotalConnections(total);
     } catch (err) {
-      alert('Error');
+      Alert.alert('Erro ao buscar conexões');
     }
   }, []);
 
