@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { View, Image, Text, Linking } from 'react-native';
 
 import heartOutlineIcon from '../../assets/images/icons/heart-outline.png';
@@ -7,6 +7,7 @@ import whatsappIcon from '../../assets/images/icons/whatsapp.png';
 
 import styles from './styles';
 import { RectButton } from 'react-native-gesture-handler';
+import api from '../../services/api';
 
 interface Teacher {
   id: number;
@@ -21,14 +22,34 @@ interface Teacher {
 
 interface TeacherItemProps {
   teacher: Teacher;
+  favorited: boolean;
+  onAddFavorite?(id: number): void;
+  onRemoveFavorite(id: number): void;
 }
 
-const TeacherItem: React.FC<TeacherItemProps> = ({ teacher }) => {
-  const { name, subject, avatar, bio, cost, whatsapp } = teacher;
+const TeacherItem: React.FC<TeacherItemProps> = ({
+  teacher,
+  favorited,
+  onAddFavorite,
+  onRemoveFavorite,
+}) => {
+  const { id, name, subject, avatar, bio, cost, whatsapp } = teacher;
 
   const handleLinkToWhatsapp = useCallback(() => {
+    api.post('/connections', {
+      user_id: id,
+    });
+
     Linking.openURL(`whatsapp://send?phone=${whatsapp}`);
   }, [whatsapp]);
+
+  const handleToggleFavorite = useCallback(() => {
+    if (favorited) {
+      onRemoveFavorite(id);
+    } else if (onAddFavorite) {
+      onAddFavorite(id);
+    }
+  }, [id, favorited, onAddFavorite, onRemoveFavorite]);
 
   return (
     <View style={styles.container}>
@@ -51,9 +72,11 @@ const TeacherItem: React.FC<TeacherItemProps> = ({ teacher }) => {
         </Text>
 
         <View style={styles.buttonsContainer}>
-          <RectButton style={[styles.favoriteButton, styles.favorited]}>
-            {/* <Image source={heartOutlineIcon} /> */}
-            <Image source={unfavoriteIcon} />
+          <RectButton
+            style={[styles.favoriteButton, favorited ? styles.favorited : null]}
+            onPress={handleToggleFavorite}
+          >
+            <Image source={favorited ? unfavoriteIcon : heartOutlineIcon} />
           </RectButton>
 
           <RectButton

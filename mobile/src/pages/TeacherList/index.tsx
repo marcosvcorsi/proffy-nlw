@@ -1,5 +1,6 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { View, Text, Alert } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import {
   ScrollView,
   TextInput,
@@ -30,7 +31,41 @@ const TeacherList: React.FC = () => {
   const [subject, setSubject] = useState('');
   const [week_day, setWeekDay] = useState('');
   const [time, setTime] = useState('');
+
   const [teachers, setTeachers] = useState<Teacher[]>([]);
+  const [favorites, setFavorites] = useState<Teacher[]>([]);
+
+  useEffect(() => {
+    AsyncStorage.getItem('favorites').then((response) => {
+      if (response) {
+        const favoritedTeachers = JSON.parse(response);
+        setFavorites(favoritedTeachers);
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    AsyncStorage.setItem('favorites', JSON.stringify(favorites));
+  }, [favorites]);
+
+  const handleAddFavorite = useCallback(
+    (id: number) => {
+      const findTeacher = teachers.find((teacher) => teacher.id === id);
+
+      if (findTeacher) {
+        setFavorites((state) => {
+          return [...state, findTeacher];
+        });
+      }
+    },
+    [teachers]
+  );
+
+  const handleRemoveFavorite = useCallback((id: number) => {
+    setFavorites((state) => {
+      return state.filter((teacher) => teacher.id !== id);
+    });
+  }, []);
 
   const handleToggleFilterVisible = useCallback(() => {
     setIsFiltersVisible((state) => !state);
@@ -116,7 +151,15 @@ const TeacherList: React.FC = () => {
         contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 16 }}
       >
         {teachers.map((teacher) => (
-          <TeacherItem key={teacher.id} teacher={teacher} />
+          <TeacherItem
+            key={teacher.id}
+            teacher={teacher}
+            favorited={favorites.some(
+              (favoritedTeacher) => favoritedTeacher.id === teacher.id
+            )}
+            onAddFavorite={handleAddFavorite}
+            onRemoveFavorite={handleRemoveFavorite}
+          />
         ))}
       </ScrollView>
     </View>
