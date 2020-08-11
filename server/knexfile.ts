@@ -1,6 +1,8 @@
 import path from 'path';
 
-require('dotenv').config();
+require('dotenv').config({
+  path: process.env.NODE_ENV === 'test' ? '.env.test' : '.env',
+});
 
 module.exports = {
   client: 'pg',
