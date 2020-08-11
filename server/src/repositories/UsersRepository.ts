@@ -9,11 +9,13 @@ export default class UsersRepository {
   }
 
   public async create({ name, avatar, whatsapp, bio }: CreateUserDTO) {
-    return this.db('users').insert({
-      name,
-      avatar,
-      whatsapp,
-      bio,
-    });
+    return this.db('users')
+      .insert({
+        name,
+        avatar,
+        whatsapp,
+        bio,
+      })
+      .returning('id');
   }
 }

@@ -11,11 +11,13 @@ export default class ClassesRepository {
   }
 
   public async create({ cost, subject, user_id }: CreateClassDTO) {
-    return this.db('classes').insert({
-      subject,
-      cost,
-      user_id,
-    });
+    return this.db('classes')
+      .insert({
+        subject,
+        cost,
+        user_id,
+      })
+      .returning('id');
   }
 
   public async findAllByFilters({ subject, time, week_day }: FilterClassDTO) {
@@ -23,10 +25,10 @@ export default class ClassesRepository {
       .whereExists(function () {
         this.select('class_schedule.*')
           .from('class_schedule')
-          .whereRaw('`class_schedule`.`class_id` = `classes`.`id`')
-          .whereRaw('`class_schedule`.`week_day` = ??', [Number(week_day)])
-          .whereRaw('`class_schedule`.`from` <= ??', [time])
-          .whereRaw('`class_schedule`.`to` > ??', [time]);
+          .whereRaw('class_schedule.class_id = classes.id')
+          .whereRaw('class_schedule.week_day = ??', [Number(week_day)])
+          .whereRaw('class_schedule.from <= ??', [time])
+          .whereRaw('class_schedule.to > ??', [time]);
       })
       .where('classes.subject', '=', subject)
       .join('users', 'classes.user_id', '=', 'users.id')
