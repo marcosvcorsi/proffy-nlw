@@ -23,6 +23,7 @@ module.exports = {
     '!src/database/*.ts',
     '!src/database/**/*.ts',
     '!src/server.ts',
+    '!src/dtos/*.ts',
   ],
 
   // The directory where Jest should output its coverage files

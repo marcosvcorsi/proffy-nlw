@@ -9,8 +9,6 @@ export default class ConnectionsRepository {
   }
 
   public async create({ user_id }: CreateConnectionDTO) {
-    console.log(user_id);
-
     return this.db('connections').insert({
       user_id,
     });
