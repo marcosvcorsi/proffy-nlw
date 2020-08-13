@@ -1,8 +1,6 @@
 import { Response, Request } from 'express';
-import ClassesRepository from '../repositories/ClassesRepository';
-import convertHourToMinutes from '../utils/convertHourToMinutes';
-import db from '../database/connection';
 import CreateClassService from '../services/CreateClassService';
+import ListClassService from '../services/ListClassService';
 
 export default class ClassesControler {
   public async list(request: Request, response: Response) {
@@ -14,13 +12,11 @@ export default class ClassesControler {
       });
     }
 
-    const timeInMinutes = convertHourToMinutes(time as string);
-
-    const classesRepository = new ClassesRepository(db);
-    const classes = await classesRepository.findAllByFilters({
+    const listClassService = new ListClassService();
+    const classes = await listClassService.execute({
       week_day: Number(week_day),
       subject: String(subject),
-      time: timeInMinutes,
+      time: String(time),
     });
 
     return response.json(classes);
