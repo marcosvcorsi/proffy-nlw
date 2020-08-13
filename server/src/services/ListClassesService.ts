@@ -3,7 +3,7 @@ import convertHourToMinutes from '../utils/convertHourToMinutes';
 import ClassesRepository from '../repositories/ClassesRepository';
 import db from '../database/connection';
 
-export default class ListClassService {
+export default class ListClassesService {
   public async execute({ subject, week_day, time }: ListClassDTO) {
     const timeInMinutes = convertHourToMinutes(time as string);
 

@@ -1,6 +1,6 @@
 import { Response, Request } from 'express';
 import CreateClassService from '../services/CreateClassService';
-import ListClassService from '../services/ListClassService';
+import ListClassesService from '../services/ListClassesService';
 
 export default class ClassesControler {
   public async list(request: Request, response: Response) {
@@ -12,8 +12,8 @@ export default class ClassesControler {
       });
     }
 
-    const listClassService = new ListClassService();
-    const classes = await listClassService.execute({
+    const listClassesService = new ListClassesService();
+    const classes = await listClassesService.execute({
       week_day: Number(week_day),
       subject: String(subject),
       time: String(time),
