@@ -4,12 +4,7 @@ import ClassesRepository from '../repositories/ClassesRepository';
 import convertHourToMinutes from '../utils/convertHourToMinutes';
 import ClassScheduleRepository from '../repositories/ClassScheduleRepository';
 import db from '../database/connection';
-
-interface ScheduleItem {
-  week_day: number;
-  from: string;
-  to: string;
-}
+import CreateClassService from '../services/CreateClassService';
 
 export default class ClassesControler {
   public async list(request: Request, response: Response) {
@@ -44,45 +39,18 @@ export default class ClassesControler {
       schedule,
     } = request.body;
 
-    const trx = await db.transaction();
+    const createClassService = new CreateClassService();
 
-    try {
-      const usersRepository = new UsersRepository(trx);
-      const [user_id] = await usersRepository.create({
-        name,
-        avatar,
-        bio,
-        whatsapp,
-      });
+    await createClassService.execute({
+      name,
+      avatar,
+      whatsapp,
+      bio,
+      subject,
+      cost,
+      schedule,
+    });
 
-      const classesRepository = new ClassesRepository(trx);
-      const [class_id] = await classesRepository.create({
-        subject,
-        cost,
-        user_id,
-      });
-
-      const classSchedules = schedule.map((scheduleItem: ScheduleItem) => {
-        return {
-          ...scheduleItem,
-          from: convertHourToMinutes(scheduleItem.from),
-          to: convertHourToMinutes(scheduleItem.to),
-          class_id,
-        };
-      });
-
-      const classScheduleRepository = new ClassScheduleRepository(trx);
-      await classScheduleRepository.create({ schedules: classSchedules });
-
-      await trx.commit();
-
-      return response.status(201).send();
-    } catch (err) {
-      await trx.rollback();
-
-      return response.status(400).json({
-        error: 'Unexpected error while creating new class',
-      });
-    }
+    return response.status(201).send();
   }
 }

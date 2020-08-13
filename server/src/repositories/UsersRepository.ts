@@ -1,5 +1,5 @@
-import CreateUserDTO from '../dtos/CreateUserDTO';
 import Knex from 'knex';
+import User from '../entities/User';
 
 export default class UsersRepository {
   private db: Knex;
@@ -8,7 +8,7 @@ export default class UsersRepository {
     this.db = db;
   }
 
-  public async create({ name, avatar, whatsapp, bio }: CreateUserDTO) {
+  public async create({ name, avatar, whatsapp, bio }: User) {
     return this.db('users')
       .insert({
         name,

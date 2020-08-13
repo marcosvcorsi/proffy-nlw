@@ -1,5 +1,5 @@
-import CreateClassScheduleDTO from '../dtos/CreateClassScheduleDTO';
 import Knex from 'knex';
+import ClassSchedule from '../entities/ClassSchedule';
 
 export default class ClassScheduleRepository {
   private db: Knex;
@@ -8,7 +8,7 @@ export default class ClassScheduleRepository {
     this.db = db;
   }
 
-  public async create({ schedules }: CreateClassScheduleDTO) {
+  public async create(schedules: ClassSchedule[]) {
     return this.db('class_schedule').insert(schedules);
   }
 }

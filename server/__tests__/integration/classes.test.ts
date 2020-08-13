@@ -86,11 +86,9 @@ describe('Classes Test Suite', () => {
       user_id: other_id,
     });
 
-    await classScheduleRepository.create({
-      schedules: [
-        { class_id: other_class_id, week_day: '1', from: 720, to: 800 },
-      ],
-    });
+    await classScheduleRepository.create([
+      { class_id: other_class_id, week_day: 1, from: 720, to: 800 },
+    ]);
 
     const [user_id] = await usersRepository.create({
       name: 'any',
@@ -105,9 +103,9 @@ describe('Classes Test Suite', () => {
       user_id,
     });
 
-    await classScheduleRepository.create({
-      schedules: [{ class_id, week_day: '0', from: 420, to: 800 }],
-    });
+    await classScheduleRepository.create([
+      { class_id, week_day: 0, from: 420, to: 800 },
+    ]);
 
     const response = await request(app).get('/classes').query({
       week_day: '0',

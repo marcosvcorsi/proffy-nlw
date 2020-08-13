@@ -1,5 +1,5 @@
 import Knex from 'knex';
-import CreateConnectionDTO from '../dtos/CreateConnectionDTO';
+import { Connection } from '../entities/Connection';
 
 export default class ConnectionsRepository {
   private db: Knex;
@@ -8,7 +8,7 @@ export default class ConnectionsRepository {
     this.db = db;
   }
 
-  public async create({ user_id }: CreateConnectionDTO) {
+  public async create({ user_id }: Connection) {
     return this.db('connections').insert({
       user_id,
     });

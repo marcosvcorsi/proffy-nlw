@@ -1,4 +1,4 @@
-export default interface CreateUserDTO {
+export default interface User {
   name: string;
   whatsapp: string;
   avatar: string;

@@ -1,7 +1,7 @@
-import CreateClassDTO from '../dtos/CreateClassDTO';
 import db from '../database/connection';
 import Knex from 'knex';
 import FilterClassDTO from '../dtos/FilterClassDTO';
+import Class from '../entities/Class';
 
 export default class ClassesRepository {
   private db: Knex;
@@ -10,7 +10,7 @@ export default class ClassesRepository {
     this.db = db;
   }
 
-  public async create({ cost, subject, user_id }: CreateClassDTO) {
+  public async create({ cost, subject, user_id }: Class) {
     return this.db('classes')
       .insert({
         subject,
