@@ -1,4 +1,3 @@
-import db from '../database/connection';
 import Knex from 'knex';
 import FilterClassDTO from '../dtos/FilterClassDTO';
 import Class from '../entities/Class';
@@ -21,7 +20,7 @@ export default class ClassesRepository {
   }
 
   public async findAllByFilters({ subject, time, week_day }: FilterClassDTO) {
-    return db('classes')
+    return this.db('classes')
       .whereExists(function () {
         this.select('class_schedule.*')
           .from('class_schedule')

@@ -1,8 +1,6 @@
 import { Response, Request } from 'express';
-import UsersRepository from '../repositories/UsersRepository';
 import ClassesRepository from '../repositories/ClassesRepository';
 import convertHourToMinutes from '../utils/convertHourToMinutes';
-import ClassScheduleRepository from '../repositories/ClassScheduleRepository';
 import db from '../database/connection';
 import CreateClassService from '../services/CreateClassService';
 
