@@ -32,6 +32,7 @@
     "typescript": "^3.9.7"
   },
   "dependencies": {
+    "celebrate": "^12.2.0",
     "cors": "^2.8.5",
     "cross-env": "^7.0.2",
     "dotenv": "^8.2.0",

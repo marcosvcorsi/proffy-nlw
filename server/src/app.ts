@@ -1,6 +1,8 @@
 import express from 'express';
 import 'express-async-errors';
 
+import { errors } from 'celebrate';
+
 import cors from 'cors';
 import routes from './routes';
 import exceptionHandler from './middlewares/exceptionHandler';
@@ -12,6 +14,7 @@ app.use(express.json());
 
 app.use(routes);
 
+app.use(errors());
 app.use(exceptionHandler);
 
 export default app;
