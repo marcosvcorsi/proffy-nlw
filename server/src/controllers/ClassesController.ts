@@ -6,12 +6,6 @@ export default class ClassesControler {
   public async list(request: Request, response: Response) {
     const { week_day, subject, time } = request.query;
 
-    if (!week_day || !subject || !time) {
-      return response.status(400).json({
-        error: 'No filter params',
-      });
-    }
-
     const listClassesService = new ListClassesService();
     const classes = await listClassesService.execute({
       week_day: Number(week_day),
