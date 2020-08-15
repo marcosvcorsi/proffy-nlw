@@ -6,6 +6,6 @@ export default class CreateConnectionService {
   public async execute({ user_id }: CreateConnectionDTO) {
     const connectionsRepository = new ConnectionsRepository(db);
 
-    await connectionsRepository.create({ user_id: Number(user_id) });
+    await connectionsRepository.create({ user_id });
   }
 }
