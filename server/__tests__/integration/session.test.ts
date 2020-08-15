@@ -30,6 +30,24 @@ describe('Session Test Suite', () => {
     expect(response.status).toBe(200);
   });
 
+  it('should not be able to create a new session with invalid password', async () => {
+    const response = await request(app).post('/session').send({
+      email: 'validemail@mail.com',
+      password: 'invalidpassword',
+    });
+
+    expect(response.status).toBe(401);
+  });
+
+  it('should not be able to create a new session with invalid email', async () => {
+    const response = await request(app).post('/session').send({
+      email: 'invalidemail@mail.com',
+      password: 'validpassword',
+    });
+
+    expect(response.status).toBe(401);
+  });
+
   it('should throw an error when password param not found', async () => {
     const response = await request(app).post('/session').send({
       email: 'validemail@mail.com',
