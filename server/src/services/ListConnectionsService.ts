@@ -2,11 +2,11 @@ import ConnectionsRepository from '../repositories/ConnectionsRepository';
 import db from '../database/connection';
 
 export default class ListConnectionsService {
-  public async execute() {
+  async execute(): Promise<number> {
     const connectionsRepository = new ConnectionsRepository(db);
 
     const [{ total }] = await connectionsRepository.countAll();
 
-    return total;
+    return total as number;
   }
 }
