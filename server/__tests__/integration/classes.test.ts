@@ -35,12 +35,6 @@ describe('Classes Test Suite', () => {
     expect(response.status).toBe(201);
   });
 
-  // if (!week_day || !subject || !time) {
-  //   return response.status(400).json({
-  //     error: 'No filter params',
-  //   });
-  // }
-
   it('should not be able to list classes without week day param', async () => {
     const response = await request(app).get('/classes').query({
       subject: 'any',

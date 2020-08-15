@@ -27,6 +27,12 @@ describe('Connection Test Suite', () => {
     expect(response.status).toBe(201);
   });
 
+  it('should throw an erro when user id is not provided', async () => {
+    const response = await request(app).post('/connections').send({});
+
+    expect(response.status).toBe(400);
+  });
+
   it('should be able to list connections', async () => {
     const usersRepository = new UsersRepository(db);
 
