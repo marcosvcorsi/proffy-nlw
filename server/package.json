@@ -8,10 +8,11 @@
     "knex:migrate": "knex --knexfile knexfile.ts migrate:latest",
     "knex:migrate:rollback": "knex --knexfile knexfile.ts migrate:rollback",
     "pretest": "cross-env NODE_ENV=test yarn knex:migrate",
-    "test": "cross-env NODE_ENV=test jest --runInBand",
+    "test": "cross-env NODE_ENV=test jest --runInBand --detectOpenHandles",
     "posttest": "cross-env NODE_ENV=test yarn knex:migrate:rollback"
   },
   "devDependencies": {
+    "@types/bcrypt": "^3.0.0",
     "@types/cors": "^2.8.7",
     "@types/express": "^4.17.7",
     "@types/hapi__joi": "^17.1.4",
@@ -33,6 +34,7 @@
     "typescript": "^3.9.7"
   },
   "dependencies": {
+    "bcrypt": "^5.0.0",
     "celebrate": "^12.2.0",
     "cors": "^2.8.5",
     "cross-env": "^7.0.2",

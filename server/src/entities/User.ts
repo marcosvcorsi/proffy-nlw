@@ -1,6 +1,9 @@
 export default interface User {
   name: string;
-  whatsapp: string;
-  avatar: string;
-  bio: string;
+  lastname: string;
+  email: string;
+  password: string;
+  whatsapp?: string;
+  avatar?: string;
+  bio?: string;
 }

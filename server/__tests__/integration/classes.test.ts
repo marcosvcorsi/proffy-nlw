@@ -72,6 +72,9 @@ describe('Classes Test Suite', () => {
       avatar: 'other',
       whatsapp: 'other',
       bio: 'other',
+      email: 'other@email.com',
+      password: '',
+      lastname: '',
     });
 
     const [other_class_id] = await classesRepository.create({
@@ -89,6 +92,9 @@ describe('Classes Test Suite', () => {
       avatar: 'any',
       whatsapp: 'any',
       bio: 'any',
+      email: 'any@email.com',
+      password: '',
+      lastname: '',
     });
 
     const [class_id] = await classesRepository.create({

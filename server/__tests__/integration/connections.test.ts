@@ -18,6 +18,9 @@ describe('Connection Test Suite', () => {
       avatar: 'any',
       whatsapp: 'any',
       bio: 'any',
+      email: 'any@email.com',
+      password: 'anypassword',
+      lastname: 'any',
     });
 
     const response = await request(app).post('/connections').send({
@@ -41,6 +44,9 @@ describe('Connection Test Suite', () => {
       avatar: 'any',
       whatsapp: 'any',
       bio: 'any',
+      email: 'any@email.com',
+      password: 'anypassword',
+      lastname: 'any',
     });
 
     const [second] = await usersRepository.create({
@@ -48,6 +54,9 @@ describe('Connection Test Suite', () => {
       avatar: 'other',
       whatsapp: 'other',
       bio: 'other',
+      email: 'any2@email.com',
+      password: 'anypassword',
+      lastname: 'any',
     });
 
     const [third] = await usersRepository.create({
@@ -55,6 +64,9 @@ describe('Connection Test Suite', () => {
       avatar: 'other',
       whatsapp: 'other',
       bio: 'other',
+      email: 'any3@email.com',
+      password: 'anypassword',
+      lastname: 'any',
     });
 
     const connectionsRepository = new ConnectionsRepository(db);
