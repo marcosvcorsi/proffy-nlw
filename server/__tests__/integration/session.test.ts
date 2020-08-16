@@ -2,20 +2,17 @@ import request from 'supertest';
 import app from '../../src/app';
 
 import db from '../../src/database/connection';
-import UsersRepository from '../../src/repositories/UsersRepository';
+import CreateUserService from '../../src/services/CreateUserService';
 
 describe('Session Test Suite', () => {
   beforeEach(async () => {
     await db('users').del();
 
-    const usersRepository = new UsersRepository(db);
+    const createUserService = new CreateUserService();
 
-    await usersRepository.create({
+    await createUserService.execute({
       name: 'validname',
       lastname: 'validlastanme',
-      avatar: 'validavatar',
-      whatsapp: 'validwp',
-      bio: 'validbio',
       email: 'validemail@mail.com',
       password: 'validpassword',
     });

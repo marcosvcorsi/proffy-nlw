@@ -1,6 +1,5 @@
 import Knex from 'knex';
 import User from '../entities/User';
-import { generateHash } from '../utils/hash';
 
 export default class UsersRepository {
   private db: Knex;
@@ -18,8 +17,6 @@ export default class UsersRepository {
     email,
     lastname,
   }: User) {
-    const hashedPassword = await generateHash(password);
-
     return this.db('users')
       .insert({
         name,
@@ -28,7 +25,7 @@ export default class UsersRepository {
         bio,
         email,
         lastname,
-        password: hashedPassword,
+        password,
       })
       .returning('id');
   }
