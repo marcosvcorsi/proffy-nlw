@@ -25,6 +25,7 @@ describe('Session Test Suite', () => {
     });
 
     expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty('token');
   });
 
   it('should not be able to create a new session with invalid password', async () => {
