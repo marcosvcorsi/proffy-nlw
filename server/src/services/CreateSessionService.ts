@@ -1,13 +1,23 @@
-import User from '../entities/User';
+import { sign } from 'jsonwebtoken';
 import CreateSessionDTO from '../dtos/CreateSessionDTO';
 import UsersRepository from '../repositories/UsersRepository';
+
 import db from '../database/connection';
+import authConfig from '../config/auth';
 import ServerError from '../errors/ServerError';
 
 import { compareHash } from '../utils/hash';
+import User from '../entities/User';
+
+interface SessionResponse extends User {
+  token: string;
+}
 
 export default class CreateSessionService {
-  async execute({ email, password }: CreateSessionDTO): Promise<User> {
+  async execute({
+    email,
+    password,
+  }: CreateSessionDTO): Promise<SessionResponse> {
     const usersRepository = new UsersRepository(db);
 
     const user = await usersRepository.findByEmail(email);
@@ -16,6 +26,16 @@ export default class CreateSessionService {
       throw new ServerError('Usuário ou senha inválidos', 401);
     }
 
-    return user;
+    const { secret, expiresIn } = authConfig.jwt;
+
+    const token = sign({}, secret, {
+      subject: String(user.id),
+      expiresIn,
+    });
+
+    return {
+      ...user,
+      token,
+    };
   }
 }

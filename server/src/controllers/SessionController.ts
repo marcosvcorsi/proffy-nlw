@@ -8,8 +8,8 @@ export default class SessionController {
     const createSessionService = new CreateSessionService();
     const user = await createSessionService.execute({ email, password });
 
-    const { name, lastname } = user;
+    const { name, lastname, token } = user;
 
-    return response.json({ name, lastname, email });
+    return response.json({ name, lastname, email, token });
   }
 }
