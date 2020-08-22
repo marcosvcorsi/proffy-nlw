@@ -1,5 +1,15 @@
-import knex from 'knex';
+import { createConnection, getConnectionOptions, Connection } from 'typeorm';
 
-const db = knex(require('../../knexfile'));
+export default async (name = 'default'): Promise<Connection> => {
+  const defaultOptions = await getConnectionOptions();
 
-export default db;
+  return createConnection(
+    Object.assign(defaultOptions, {
+      name,
+      database:
+        process.env.NODE_ENV === 'test'
+          ? 'nlw_ecoleta_tests'
+          : defaultOptions.database,
+    }),
+  );
+};
