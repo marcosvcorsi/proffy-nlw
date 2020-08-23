@@ -8,7 +8,7 @@ export default async (name = 'default'): Promise<Connection> => {
       name,
       database:
         process.env.NODE_ENV === 'test'
-          ? 'nlw_ecoleta_tests'
+          ? 'proffy_nlw_tests'
           : defaultOptions.database,
     }),
   );

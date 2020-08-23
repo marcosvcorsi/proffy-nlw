@@ -27,6 +27,16 @@ export default class CreateClasses1598055406010 implements MigrationInterface {
             name: 'user_id',
             type: 'integer',
           },
+          {
+            name: 'created_at',
+            type: 'timestamp',
+            default: 'now()',
+          },
+          {
+            name: 'updated_at',
+            type: 'timestamp',
+            default: 'now()',
+          },
         ],
         foreignKeys: [
           {

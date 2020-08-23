@@ -33,6 +33,16 @@ export default class CreateClassSchedule1598055600648
             name: 'class_id',
             type: 'integer',
           },
+          {
+            name: 'created_at',
+            type: 'timestamp',
+            default: 'now()',
+          },
+          {
+            name: 'updated_at',
+            type: 'timestamp',
+            default: 'now()',
+          },
         ],
         foreignKeys: [
           {

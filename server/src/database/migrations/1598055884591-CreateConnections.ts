@@ -18,6 +18,16 @@ export default class CreateConnections1598055884591
             name: 'user_id',
             type: 'integer',
           },
+          {
+            name: 'created_at',
+            type: 'timestamp',
+            default: 'now()',
+          },
+          {
+            name: 'updated_at',
+            type: 'timestamp',
+            default: 'now()',
+          },
         ],
         foreignKeys: [
           {

@@ -2,7 +2,6 @@ import { sign } from 'jsonwebtoken';
 import CreateSessionDTO from '../dtos/CreateSessionDTO';
 import UsersRepository from '../repositories/UsersRepository';
 
-import db from '../database/connection';
 import authConfig from '../config/auth';
 import ServerError from '../errors/ServerError';
 
@@ -18,7 +17,7 @@ export default class CreateSessionService {
     email,
     password,
   }: CreateSessionDTO): Promise<SessionResponse> {
-    const usersRepository = new UsersRepository(db);
+    const usersRepository = new UsersRepository();
 
     const user = await usersRepository.findByEmail(email);
 

@@ -6,9 +6,7 @@
   "scripts": {
     "start": "tsnd --transpile-only --respawn --ignore-watch node_modules src/server.ts",
     "typeorm": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
-    "pretest": "cross-env NODE_ENV=test yarn knex:migrate",
-    "test": "cross-env NODE_ENV=test jest --runInBand --detectOpenHandles",
-    "posttest": "cross-env NODE_ENV=test yarn knex:migrate:rollback"
+    "test": "cross-env NODE_ENV=test jest --runInBand --detectOpenHandles"
   },
   "devDependencies": {
     "@types/bcrypt": "^3.0.0",

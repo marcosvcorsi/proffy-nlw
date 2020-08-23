@@ -3,4 +3,7 @@ export default interface CreateUserDTO {
   lastname: string;
   email: string;
   password: string;
+  avatar?: string;
+  whatsapp?: string;
+  bio?: string;
 }

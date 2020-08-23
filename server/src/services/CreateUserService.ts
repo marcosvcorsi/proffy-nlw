@@ -1,12 +1,11 @@
 import CreateUserDTO from '../dtos/CreateUserDTO';
 import UsersRepository from '../repositories/UsersRepository';
-import db from '../database/connection';
 import ServerError from '../errors/ServerError';
 import { generateHash } from '../utils/hash';
 
 export default class CreateUserService {
   async execute({ name, email, lastname, password }: CreateUserDTO) {
-    const usersRepository = new UsersRepository(db);
+    const usersRepository = new UsersRepository();
 
     const findEmail = await usersRepository.findByEmail(email);
 

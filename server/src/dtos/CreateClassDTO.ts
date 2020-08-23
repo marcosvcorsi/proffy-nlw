@@ -12,4 +12,5 @@ export default interface CreateClassDTO {
   subject: string;
   cost: number;
   schedule: ScheduleItem[];
+  user_id?: number;
 }
