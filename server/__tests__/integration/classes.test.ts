@@ -1,124 +1,145 @@
-// import request from 'supertest';
-// import app from '../../src/app';
+import request from 'supertest';
+import { Connection, getConnection } from 'typeorm';
+import app from '../../src/app';
 
-// import UsersRepository from '../../src/repositories/UsersRepository';
-// import ClassesRepository from '../../src/repositories/ClassesRepository';
-// import ClassScheduleRepository from '../../src/repositories/ClassScheduleRepository';
+import createConnection from '../../src/database';
+
+import CreateUserService from '../../src/services/CreateUserService';
+import CreateSessionService from '../../src/services/CreateSessionService';
+import CreateClassService from '../../src/services/CreateClassService';
+
+let connection: Connection;
+let user_id: number;
+let userToken: string;
 
 describe('Classes Test Suite', () => {
-  it('', () => {
-    expect(true).toBe(true);
+  beforeAll(async () => {
+    connection = await createConnection('test-connection');
+
+    await connection.query('DROP TABLE IF EXISTS connections');
+    await connection.query('DROP TABLE IF EXISTS class_schedule');
+    await connection.query('DROP TABLE IF EXISTS classes');
+    await connection.query('DROP TABLE IF EXISTS users');
+    await connection.query('DROP TABLE IF EXISTS migrations');
+
+    await connection.runMigrations();
   });
-  // beforeEach(async () => {
-  //   await db('class_schedule').del();
-  //   await db('classes').del();
-  //   await db('users').del();
-  // });
 
-  // it('should be able to create a class', async () => {
-  //   const response = await request(app)
-  //     .post('/classes')
-  //     .send({
-  //       name: 'Marcos Corsi',
-  //       avatar:
-  //         'https://avatars3.githubusercontent.com/u/5308575?s=460&u=3edc49708de269c0df62f84c1681d6a5582f2ec4&v=4',
-  //       whatsapp: '5546999739692',
-  //       bio:
-  //         'Software Engineer at @Gmobil. Javascript/Typescript and Java developer. Currently studying Node.js, ReactJS and React Native.',
-  //       subject: 'Ciências',
-  //       cost: 100,
-  //       schedule: [
-  //         { week_day: 1, from: '8:00', to: '12:00' },
-  //         { week_day: 3, from: '10:00', to: '18:00' },
-  //         { week_day: 5, from: '13:00', to: '14:00' },
-  //       ],
-  //     });
+  beforeEach(async () => {
+    await connection.query('DELETE FROM class_schedule');
+    await connection.query('DELETE FROM classes');
+    await connection.query('DELETE FROM users');
 
-  //   expect(response.status).toBe(201);
-  // });
+    const createUserService = new CreateUserService();
 
-  // it('should not be able to list classes without week day param', async () => {
-  //   const response = await request(app).get('/classes').query({
-  //     subject: 'any',
-  //     time: 'any',
-  //   });
+    const email = 'validemail@mail.com';
+    const password = 'validpassword';
 
-  //   expect(response.status).toBe(400);
-  // });
+    user_id = await createUserService.execute({
+      name: 'validname',
+      lastname: 'validlastanme',
+      email,
+      password,
+    });
 
-  // it('should not be able to list classes without subject param', async () => {
-  //   const response = await request(app).get('/classes').query({
-  //     week_day: 'any',
-  //     time: 'any',
-  //   });
+    const createSessionService = new CreateSessionService();
 
-  //   expect(response.status).toBe(400);
-  // });
+    const { token } = await createSessionService.execute({ email, password });
+    userToken = `Bearer ${token}`;
+  });
 
-  // it('should not be able to list classes without time param', async () => {
-  //   const response = await request(app).get('/classes').query({
-  //     week_day: 'any',
-  //     subject: 'any',
-  //   });
+  afterAll(async () => {
+    const mainConnection = getConnection();
+    await connection.close();
+    await mainConnection.close();
+  });
 
-  //   expect(response.status).toBe(400);
-  // });
+  it('should be able to create a class', async () => {
+    const response = await request(app)
+      .post('/classes')
+      .send({
+        name: 'Marcos Corsi',
+        avatar:
+          'https://avatars3.githubusercontent.com/u/5308575?s=460&u=3edc49708de269c0df62f84c1681d6a5582f2ec4&v=4',
+        whatsapp: '5546999739692',
+        bio:
+          'Software Engineer at @Gmobil. Javascript/Typescript and Java developer. Currently studying Node.js, ReactJS and React Native.',
+        subject: 'Ciências',
+        cost: 100,
+        schedules: [
+          { week_day: 1, from: '8:00', to: '12:00' },
+          { week_day: 3, from: '10:00', to: '18:00' },
+          { week_day: 5, from: '13:00', to: '14:00' },
+        ],
+      })
+      .set('Authorization', userToken);
 
-  // it('should  be able to list classes', async () => {
-  //   const usersRepository = new UsersRepository(db);
-  //   const classesRepository = new ClassesRepository(db);
-  //   const classScheduleRepository = new ClassScheduleRepository(db);
+    expect(response.status).toBe(201);
+  });
 
-  //   const [other_id] = await usersRepository.create({
-  //     name: 'other',
-  //     avatar: 'other',
-  //     whatsapp: 'other',
-  //     bio: 'other',
-  //     email: 'other@email.com',
-  //     password: '',
-  //     lastname: '',
-  //   });
+  it('should not be able to list classes without week day param', async () => {
+    const response = await request(app)
+      .get('/classes')
+      .query({
+        subject: 'any',
+        time: 'any',
+      })
+      .set('Authorization', userToken);
 
-  //   const [other_class_id] = await classesRepository.create({
-  //     subject: 'any',
-  //     cost: 10,
-  //     user_id: other_id,
-  //   });
+    expect(response.status).toBe(400);
+  });
 
-  //   await classScheduleRepository.create([
-  //     { class_id: other_class_id, week_day: 1, from: 720, to: 800 },
-  //   ]);
+  it('should not be able to list classes without subject param', async () => {
+    const response = await request(app)
+      .get('/classes')
+      .query({
+        week_day: 'any',
+        time: 'any',
+      })
+      .set('Authorization', userToken);
 
-  //   const [user_id] = await usersRepository.create({
-  //     name: 'any',
-  //     avatar: 'any',
-  //     whatsapp: 'any',
-  //     bio: 'any',
-  //     email: 'any@email.com',
-  //     password: '',
-  //     lastname: '',
-  //   });
+    expect(response.status).toBe(400);
+  });
 
-  //   const [class_id] = await classesRepository.create({
-  //     subject: 'any',
-  //     cost: 10,
-  //     user_id,
-  //   });
+  it('should not be able to list classes without time param', async () => {
+    const response = await request(app)
+      .get('/classes')
+      .query({
+        week_day: 'any',
+        subject: 'any',
+      })
+      .set('Authorization', userToken);
 
-  //   await classScheduleRepository.create([
-  //     { class_id, week_day: 0, from: 420, to: 800 },
-  //   ]);
+    expect(response.status).toBe(400);
+  });
 
-  //   const response = await request(app).get('/classes').query({
-  //     week_day: '0',
-  //     subject: 'any',
-  //     time: '8:00',
-  //   });
+  it('should  be able to list classes', async () => {
+    const createClassService = new CreateClassService();
 
-  //   expect(response.status).toBe(200);
-  //   expect(response.body).toHaveLength(1);
-  //   expect(response.body).toEqual(
-  //     expect.arrayContaining([expect.objectContaining({ name: 'any' })]),
-  //   );
-  // });
+    await createClassService.execute({
+      subject: 'any',
+      cost: 8,
+      user_id,
+      schedules: [
+        { week_day: 0, from: '7:30', to: '12:00' },
+        { week_day: 3, from: '10:00', to: '18:00' },
+        { week_day: 5, from: '13:00', to: '14:00' },
+      ],
+    });
+
+    const response = await request(app)
+      .get('/classes')
+      .query({
+        week_day: '0',
+        subject: 'any',
+        time: '8:00',
+      })
+      .set('Authorization', userToken);
+
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveLength(1);
+    expect(response.body).toEqual(
+      expect.arrayContaining([expect.objectContaining({ subject: 'any' })]),
+    );
+  });
 });

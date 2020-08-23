@@ -10,11 +10,17 @@ export default class ClassesRepository {
     this.ormRepository = getRepository(Class);
   }
 
-  public async create({ cost, subject, user_id }: CreateClassDTO) {
+  public async create({
+    cost,
+    subject,
+    user_id,
+    class_schedules,
+  }: CreateClassDTO) {
     const newClass = this.ormRepository.create({
       subject,
       cost,
       user_id,
+      class_schedules,
     });
 
     await this.ormRepository.save(newClass);
@@ -23,20 +29,15 @@ export default class ClassesRepository {
   }
 
   public async findAllByFilters({ subject, time, week_day }: FilterClassDTO) {
-    console.log(subject, time, week_day);
-
-    // return this.db('classes')
-    //   .whereExists(function () {
-    //     this.select('class_schedule.*')
-    //       .from('class_schedule')
-    //       .whereRaw('class_schedule.class_id = classes.id')
-    //       .whereRaw('class_schedule.week_day = ??', [Number(week_day)])
-    //       .whereRaw('class_schedule.from <= ??', [time])
-    //       .whereRaw('class_schedule.to > ??', [time]);
-    //   })
-    //   .where('classes.subject', '=', subject)
-    //   .join('users', 'classes.user_id', '=', 'users.id')
-    //   .select(['classes.*', 'users.*']);
-    return [];
+    return this.ormRepository
+      .createQueryBuilder('classes')
+      .distinct()
+      .leftJoinAndSelect('classes.user', 'user')
+      .leftJoinAndSelect('classes.class_schedules', 'class_schedules')
+      .where('classes.subject = :subject', { subject })
+      .andWhere('class_schedules.week_day = :week_day', { week_day })
+      .andWhere('class_schedules.from <= :time', { time })
+      .andWhere('class_schedules.to > :time', { time })
+      .getMany();
   }
 }

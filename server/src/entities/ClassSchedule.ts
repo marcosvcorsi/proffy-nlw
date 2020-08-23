@@ -4,7 +4,10 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
+import Class from './Class';
 
 @Entity('class_schedule')
 class ClassSchedule {
@@ -22,6 +25,10 @@ class ClassSchedule {
 
   @Column()
   class_id: number;
+
+  @ManyToOne(() => Class)
+  @JoinColumn({ name: 'class_id' })
+  class: Class;
 
   @CreateDateColumn()
   created_at: Date;

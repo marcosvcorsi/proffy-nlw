@@ -1,12 +1,15 @@
 import { Router } from 'express';
 
 import { celebrate, Joi } from 'celebrate';
+import ensureAuthenticated from '../middlewares/ensureAuth';
 
 import ClassesControler from '../controllers/ClassesController';
 
 const classesRouter = Router();
 
 const classesController = new ClassesControler();
+
+classesRouter.use(ensureAuthenticated);
 
 classesRouter.get(
   '/',
@@ -30,7 +33,7 @@ classesRouter.post(
       bio: Joi.string().required(),
       subject: Joi.string().required(),
       cost: Joi.number().required(),
-      schedule: Joi.array().min(1).required(),
+      schedules: Joi.array().min(1).required(),
     },
   }),
   classesController.create,

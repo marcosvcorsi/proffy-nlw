@@ -1,5 +1,4 @@
 import { sign } from 'jsonwebtoken';
-import CreateSessionDTO from '../dtos/CreateSessionDTO';
 import UsersRepository from '../repositories/UsersRepository';
 
 import authConfig from '../config/auth';
@@ -12,11 +11,13 @@ interface SessionResponse extends User {
   token: string;
 }
 
+interface IRequest {
+  email: string;
+  password: string;
+}
+
 export default class CreateSessionService {
-  async execute({
-    email,
-    password,
-  }: CreateSessionDTO): Promise<SessionResponse> {
+  async execute({ email, password }: IRequest): Promise<SessionResponse> {
     const usersRepository = new UsersRepository();
 
     const user = await usersRepository.findByEmail(email);

@@ -8,7 +8,7 @@ export default class ClassesControler {
 
     const listClassesService = new ListClassesService();
     const classes = await listClassesService.execute({
-      week_day: Number(week_day),
+      week_day: String(week_day),
       subject: String(subject),
       time: String(time),
     });
@@ -17,26 +17,16 @@ export default class ClassesControler {
   }
 
   public async create(request: Request, response: Response): Promise<Response> {
-    const {
-      name,
-      avatar,
-      whatsapp,
-      bio,
-      subject,
-      cost,
-      schedule,
-    } = request.body;
+    const { id: user_id } = request.user;
+    const { subject, cost, schedules } = request.body;
 
     const createClassService = new CreateClassService();
 
     await createClassService.execute({
-      name,
-      avatar,
-      whatsapp,
-      bio,
       subject,
       cost,
-      schedule,
+      schedules,
+      user_id: Number(user_id),
     });
 
     return response.status(201).send();

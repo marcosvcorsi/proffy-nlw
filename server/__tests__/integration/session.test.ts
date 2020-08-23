@@ -26,11 +26,14 @@ describe('Session Test Suite', () => {
 
     const createUserService = new CreateUserService();
 
+    const email = 'validemail@mail.com';
+    const password = 'validpassword';
+
     await createUserService.execute({
       name: 'validname',
       lastname: 'validlastanme',
-      email: 'validemail@mail.com',
-      password: 'validpassword',
+      email,
+      password,
     });
   });
 
