@@ -9,20 +9,9 @@ export default class UsersRepository {
     this.ormRepository = getRepository(User);
   }
 
-  public async create({
-    name,
-    avatar,
-    whatsapp,
-    bio,
-    password,
-    email,
-    lastname,
-  }: CreateUserDTO) {
+  public async create({ name, lastname, password, email }: CreateUserDTO) {
     const user = this.ormRepository.create({
       name,
-      avatar,
-      whatsapp,
-      bio,
       email,
       lastname,
       password,

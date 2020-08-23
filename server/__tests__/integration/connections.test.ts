@@ -37,9 +37,6 @@ describe('Connection Test Suite', () => {
     const usersRepository = new UsersRepository();
     const user_id = await usersRepository.create({
       name: 'any',
-      avatar: 'any',
-      whatsapp: 'any',
-      bio: 'any',
       email: 'any@email.com',
       password: 'anypassword',
       lastname: 'any',
@@ -63,9 +60,6 @@ describe('Connection Test Suite', () => {
 
     const first = await usersRepository.create({
       name: 'any',
-      avatar: 'any',
-      whatsapp: 'any',
-      bio: 'any',
       email: 'any@email.com',
       password: 'anypassword',
       lastname: 'any',
@@ -73,9 +67,6 @@ describe('Connection Test Suite', () => {
 
     const second = await usersRepository.create({
       name: 'other',
-      avatar: 'other',
-      whatsapp: 'other',
-      bio: 'other',
       email: 'any2@email.com',
       password: 'anypassword',
       lastname: 'any',
@@ -83,9 +74,6 @@ describe('Connection Test Suite', () => {
 
     const third = await usersRepository.create({
       name: 'other',
-      avatar: 'other',
-      whatsapp: 'other',
-      bio: 'other',
       email: 'any3@email.com',
       password: 'anypassword',
       lastname: 'any',
