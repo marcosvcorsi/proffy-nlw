@@ -32,7 +32,7 @@ export default class ClassesRepository {
     return this.ormRepository
       .createQueryBuilder('classes')
       .distinct()
-      .leftJoinAndSelect('classes.class_schedules', 'class_schedules')
+      .leftJoin('classes.class_schedules', 'class_schedules')
       .leftJoinAndSelect('classes.user', 'user')
       .where('classes.subject = :subject', { subject })
       .andWhere('class_schedules.week_day = :week_day', { week_day })
